@@ -1,0 +1,4 @@
+# Ignore the output of opt if run in tree
+.lit_test_times.txt
+/Output/
+/oss_fuzz/Output/
