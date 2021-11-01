@@ -20,7 +20,7 @@ However, currently the management scripting does not support the full
 generality of LITs configuration language.  As such, each test should
 include a header which looks like this:
 
-... ::
+.. code::
 
   ; RUN: opt -S -passname < %s
   ; REQUIRES: asserts
