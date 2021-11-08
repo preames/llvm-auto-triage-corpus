@@ -1,24 +1,24 @@
 
 This is a corpus of standalone test cases which are known to produce crashes,
-or miscompiles when run with a recent snapshot of LLVM.  These are mostly
-taken from OSSFuzz.
+or miscompiles when run with a recent snapshot of LLVM.
+
+To contribute a test to be auto-triaged, please post a pull request. Once
+accepted, the automated reducer should have added reduced examples within
+roughly 24 hours.
 
 The primary purpose of this repo is to act as an example and test corpus
 for my (as yet unpublished) automated corpus management project. Because of
 this, YOU SHOULD NOT EXPECT THE HISTORY OF THIS REPO TO BE STABLE.  Force
 pushes to this repository to remove history may be common (e.g. removing
-large files entirely from history, etc..).  
+large files entirely from history, etc..).
+
 
 Test Format
 -----------
 
 Each test must be a self describing LIT test.  The intention is that the
 test file could be copied into the LLVM test sub-directory and work as
-expected.
-
-However, currently the management scripting does not support the full
-generality of LITs configuration language.  As such, each test should
-include a header which looks like this:
+expected. As such, each test should include a header which looks like this:
 
 .. code::
 
@@ -26,7 +26,14 @@ include a header which looks like this:
   ; REQUIRES: asserts
   ; XFAIL:
 
-Current restrictions:
+The binary exercised must be either a) an LLVM tool (e.g opt, llc,
+or clang), or an alive2 tool (eg. opt-alive.sh, alive-tv).  If using
+an alive2 too, the REQUIRES line must list "alive".
+
+Each test is required to run in less than 5 minutes.  Tests that exceed
+this on any test platform will be deleted.
+
+Current implementation restrictions:
 
 * Only the RUN line is parsed and used by the corpus automation, but all
   comment lines will be preserved during reduction.  You can also use
@@ -34,10 +41,7 @@ Current restrictions:
   if desired.
 * The current parsing of RUN is rather adhoc, so sticking exactly to this
   example's format is highly recommended.
-* Only "opt" tests are currently supported.  There's an eventual goal to
-  support "llc" and "clang" tests; other tools may (or may not) follow.
-* At the moment, all tests are assumed to require asserts.  In the future,
-  there is an intention to allow require clauses for e.g. asan or alive-tv.
+* At the moment, all tests are assumed to require asserts.
 
 Layout
 ------
