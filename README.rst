@@ -93,3 +93,35 @@ The following failure types can not (yet?) be reduced:
 * Execution failures.  The automation will not run binaries produced from
   user test cases.  As a result, miscompiles resulting in execution failures
   - which can not also be found by alive - can not be reduced.
+
+Supported Reducers
+------------------
+
+Currently, the following reducers are supported:
+
+* bugpoint (specifically, its crash reduction mode).  Bugpoint will be used
+  to reduce crashes in opt with IR inputs.  Currently crash reduction is
+  unconstrained meaning that *any* crash will be reduced.
+* llvm-reduce.  llvm-reduce will be used to reduce crashes in LLVM tools, and
+  miscompiles reported by alive on IR inputs.  Currently, reduction is
+  unconstrained meaning that any failure will be reduced.
+
+The results will be cross fed - i.e. a reduced output from bugpoint will be
+further reduced via llvm-reduce and vice-versa - but even with that, it is
+common for the two to converge to different maximally reduced IRs.
+
+In the nearish future, the following additions are planned:
+
+* creduce to reduce c/c++ language inputs for clang crashes.
+* clang to opt runline conversion.  Many times we can derive a crashing opt
+  test by taking clang's -emit-llvm output and doing a bit of cleanup.
+* pass enumeration.  For crashes in core functionality (e.g.
+  InstructionSimplify), it is common for many passes to reproduce the same
+  problem.  Having a test which only uses -instsimplify as opposed to e.g. -gvn
+  is thought to be a useful reduction.
+* Constrained reduction of assertion failures.
+
+
+
+
+
