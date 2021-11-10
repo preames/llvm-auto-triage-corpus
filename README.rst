@@ -118,12 +118,16 @@ reduction order chosen.  It can be insightful to compare them.
 
 In the nearish future, the following additions are planned:
 
-* creduce to reduce c/c++ language inputs for clang crashes.
+* creduce to reduce c/c++ language inputs for clang crashes.  Currently
+  blocked by a lack of motivating corpus examples to test with.  There's now
+  a couple, but more would really help.
 * clang to opt runline conversion.  Many times we can derive a crashing opt
   test by taking clang's -emit-llvm output and doing a bit of cleanup.
-* Constrained reduction of assertion failures.
-
-
-
-
+* Constrained reduction of assertion failures.  Blocked by lack of current
+  motivating examples.
+* Reduction of MIR issues using llvm-reduce.  Support for this was added
+  to upstream LLVM in https://reviews.llvm.org/D110527, but there's an
+  interface complexity which would require duplicating some code in the
+  reducer wrapping code.  This is blocked on figuring out if the interface
+  can be simplified to a self contains MIR test to drive target specification.
 
