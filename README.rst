@@ -105,20 +105,22 @@ Currently, the following reducers are supported:
 * llvm-reduce.  llvm-reduce will be used to reduce crashes in LLVM tools, and
   miscompiles reported by alive on IR inputs.  Currently, reduction is
   unconstrained meaning that any failure will be reduced.
+* opt-analysis-isolate.  This is a custom reducer which attempts to reproduce
+  opt crashes with only analysis printers (i.e. no transformation passes).
+  When successful, this makes it clear when a problem exists in an analysis
+  as opposed to (possibly many) consumer passes.
 
-The results will be cross fed - i.e. a reduced output from bugpoint will be
-further reduced via llvm-reduce and vice-versa - but even with that, it is
-common for the two to converge to different maximally reduced IRs.
+The results from reducers will be cross fed - i.e. a reduced output from
+bugpoint will be further reduced via llvm-reduce and vice-versa.  Note that
+it is common to have reductions converge to multiple different maximally
+reduced IRs.  That is, the reduction result is often path dependent on the
+reduction order chosen.  It can be insightful to compare them.
 
 In the nearish future, the following additions are planned:
 
 * creduce to reduce c/c++ language inputs for clang crashes.
 * clang to opt runline conversion.  Many times we can derive a crashing opt
   test by taking clang's -emit-llvm output and doing a bit of cleanup.
-* pass enumeration.  For crashes in core functionality (e.g.
-  InstructionSimplify), it is common for many passes to reproduce the same
-  problem.  Having a test which only uses -instsimplify as opposed to e.g. -gvn
-  is thought to be a useful reduction.
 * Constrained reduction of assertion failures.
 
 
