@@ -12,6 +12,81 @@ this, YOU SHOULD NOT EXPECT THE HISTORY OF THIS REPO TO BE STABLE.  Force
 pushes to this repository to remove history may be common (e.g. removing
 large files entirely from history, etc..).
 
+How to use?
+-----------
+
+There are three major use cases expected for this repo: one-off bug reduction,
+wholesale corpus reduction, and developers looking for bugs to fix.
+
+I've been fuzzing and have a whole bunch of failures!
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Great, this is exactly what this service is designed for.  If you have a
+collection of failures which are "interesting", and which you can turn into
+reasonably short running self contained LIT tests, you should post a PR to
+this repo.  Once (manually) merged, you should have results in tree within a
+fairly short period.
+
+The "interesting" requirement does require a bunch of knowledge of what
+bugs the LLVM project considers worth fixing which is largely out of scope
+for this discussion.  As an example, LLVM generally does not care about
+fixing IR parser crashes when fed invalid IR.  As such, a pull request
+will a bunch of cases of invalid IR would not be accepted.  On the other
+hand, a bunch of crashes in LLVM opt passes triggered by valid IR would be
+immediately accepted.
+
+The "reasonably short running" bit comes down to practical resourcing
+constraints.  See below for current resource requirements.
+
+Depending on the size of the failing corpus, I may ask for some help
+reducing duplicates, but this can be handled case by case.  Long term,
+the plan is to de-duplicate automatically, but we're not there yet.
+
+I found an clang crash!
++++++++++++++++++++++++
+
+If your starting point is a clang crash during the build of a large project,
+this repo is probably not yet of use to you.  Due to resource limits,
+reduction is unlikely to make progress on huge input C/C++ files.  Instead,
+you're probably better off running creduce locally and then contributing the
+result of that.
+
+If you've managed to reduce your input to something which runs quickly and is
+self contained, the automation may help with further isolating the failure to
+the appropriate part of LLVM.
+
+Longer term, the hope is to find a way to raise the resource limits to make
+this a one-step process for reducing clang crashes from the wild, but we're
+not there yet.  
+
+Let's fix some llvm bugs!
++++++++++++++++++++++++++
+
+Each of the individual files in the repo should reproduce some crash or
+miscompile on recent tip of tree LLVM.  Each test is self describing and
+(assuming you're already familiar with LLVM's LIT style testing) should be
+pretty straight forward to look at.
+
+Here are some suggestions on how to identify interesting cases to investigate:
+
+* Filter by file size.  Since the repo keeps intermediate reduction results,
+  there can be many duplicates of the same issue with test cases of various
+  complexity.   It's generally useful to start by looking at the smallest
+  tests.
+* Filter by pass.  The reducers try to reduce the pass list down to a single
+  pass wherever possible.  If you look for e.g. instsimplify bugs, you'll find
+  a bunch.  Similiarly, we try to isolate analysis crashes and you can grap
+  for the corresponding "-analysis -XXX" command line.
+* You can also use lit to quickly run any subset of tests to examine output
+  (e.g. stack trace or alive2 failure messages).  
+
+Longer term, there are tenative plans to provide a web-based triage interface
+on top of the raw information here, but for the moment, you're on your own!
+
+If during your investigation, you find test cases which have room for further
+automated reduction, sharing your observations (or even better filing bugs
+with the relevant reduction tool project) would be greatly appreciated.
+
 
 Test Format
 -----------
@@ -30,8 +105,15 @@ The binary exercised must be either a) an LLVM tool (e.g opt, llc,
 or clang), or an alive2 tool (eg. opt-alive.sh, alive-tv).  If using
 an alive2 too, the REQUIRES line must list "alive".
 
-Each test is required to run in less than 5 minutes.  Tests that exceed
-this on any test platform will be deleted.
+Additionally, tests are required to meet certain resource consumption
+limits.  These limits are chosen to allow reduction of the whole corpus
+to run in a reasonable time on the current hardware resources allocated
+to the automation without excessive timeouts (e.g. wasted compute).
+Given that, you should expect these limits to change over time.  Tests
+which don't meet these limits will be deleted. The current hard limits are:
+
+* Must run to completion in less than 5 minutes.
+* Must use less than 2GB of memory.
 
 Current implementation restrictions:
 
