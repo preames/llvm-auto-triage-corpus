@@ -6,12 +6,6 @@ To contribute a test to be auto-triaged, please post a pull request. Once
 accepted, the automated reducer should have added reduced examples within
 roughly 24 hours.
 
-The primary purpose of this repo is to act as an example and test corpus
-for my (as yet unpublished) automated corpus management project. Because of
-this, YOU SHOULD NOT EXPECT THE HISTORY OF THIS REPO TO BE STABLE.  Force
-pushes to this repository to remove history may be common (e.g. removing
-large files entirely from history, etc..).
-
 How to use?
 -----------
 
@@ -219,3 +213,23 @@ In the nearish future, the following additions are planned:
   crash when fed malformed assembly.  Generally, finding crashes on malformed
   input is "easy" and thus reduction to malformed input is not "interesting".
   Blocked on finding a way to reduce only valid, but still crashing, inputs.
+
+Retention Policy
+----------------
+
+The individual tests within this repo will be retained only so long as they
+a) demonstrate a crash on upstream LLVM, b) are subjectively interesting in
+the sole judgement of the author, and c) do not exceed any of the stated
+resource limits (as may be freely revised in the future.)
+
+Additionally, the history of this repository may be rewritten.  Because of
+this, YOU SHOULD NOT EXPECT THE HISTORY OF THIS REPO TO BE STABLE.  Force
+pushes to this repository to remove history may be common (e.g. removing
+large files entirely from history, etc..).
+
+Putting these together, you should always ensure that individual test cases
+are preserved in some other system of record.  Keep a copy of your corpus.
+Copy the text of an failure into a bug report or commit message.  You can
+include a link to this repo if desired, you should operate under the
+assumption that link may break at any time.
+
