@@ -1,10 +1,17 @@
 
-This is a corpus of standalone test cases which are known to produce crashes,
-or miscompiles when run with a recent snapshot of LLVM.  (See details on supported failure types below.)
+This repo is the interface to a service which attempts to automatically
+reduce test cases demonstrating LLVM bugs into more actionable forms.  The
+service checks all reduction results back into this repo.  As such this
+is a corpus of standalone test cases which are known to produce crashes,
+or miscompiles when run with a recent snapshot of LLVM.  (See details on
+supported failure types below.)
 
-To contribute a test to be auto-triaged, please post a pull request. Once
-accepted, the automated reducer should have added reduced examples within
-roughly 24 hours.
+To contribute a test or corpus of tests to be auto-triaged, please post a
+pull request. Once (manually) accepted, the automated reducer should have
+added reduced examples within roughly 24 hours.  Further usage information
+can be found below.
+
+.. contents::
 
 How to use?
 -----------
@@ -69,12 +76,12 @@ Here are some suggestions on how to identify interesting cases to investigate:
   tests.
 * Filter by pass.  The reducers try to reduce the pass list down to a single
   pass wherever possible.  If you look for e.g. instsimplify bugs, you'll find
-  a bunch.  Similiarly, we try to isolate analysis crashes and you can grap
+  a bunch.  Similarly, we try to isolate analysis crashes and you can grap
   for the corresponding "-analysis -XXX" command line.
 * You can also use lit to quickly run any subset of tests to examine output
   (e.g. stack trace or alive2 failure messages).  
 
-Longer term, there are tenative plans to provide a web-based triage interface
+Longer term, there are tentative plans to provide a web-based triage interface
 on top of the raw information here, but for the moment, you're on your own!
 
 If during your investigation, you find test cases which have room for further
@@ -140,12 +147,11 @@ Supported Failure Types
 
 The automated reducer can currently reduce the following types of failures:
 
-* Crashes and assertion failures on IR inputs.  LLVM is compiled with
-  assertions enabled. If the input IR triggers a crash in an llvm tool, this
-  can be reduced.
-* Miscompiles confirmed by alive on IR inputs.  If alive is capable of
-  reporting a miscompile with the example test, we can reduce the IR to the
-  minimum which produces the miscompile.
+* Crashes and assertion failures.  LLVM is compiled with assertions enabled.
+  If the input triggers a crash in a llvm tool, this can be reduced.
+* Miscompiles confirmed by alive.  If alive is capable of reporting a
+  miscompile with the test input, we can reduce the input to the minimum
+  which produces the miscompile.
 
 The automated reducer will reduce *any* failure seen in the test case.  Since
 reducers are simply a sub-case of mutation fuzzers, this means that sometimes
@@ -154,10 +160,8 @@ the reduced test case may fail for a different reason that the original test.
 
 The following failure types can not (yet?) be reduced:
 
-* Any non-IR input.  In particular, this means that reducing clang crashes
-  or miscompiles is not yet supported.  Similiarly, MIR is not yet supported.
-  Similiarly, tools such as llvm-objdump with non-IR inputs are not yet
-  supported.
+* Any non-IR, non-C/C++ input.  In particular, this means that reducing MIR
+  or assembly is not yet supported.
 * Sanitizer failures.  The LLVM build exercised does not enable ubsan, asan,
   msan, or tsan.
 * Non deterministic failures.  A test which only fails some of the time
@@ -219,7 +223,7 @@ Retention Policy
 
 The individual tests within this repo will be retained only so long as they
 a) demonstrate a crash on upstream LLVM, b) are subjectively interesting in
-the sole judgement of the author, and c) do not exceed any of the stated
+the sole judgment of the author, and c) do not exceed any of the stated
 resource limits (as may be freely revised in the future.)
 
 Additionally, the history of this repository may be rewritten.  Because of
