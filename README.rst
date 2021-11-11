@@ -109,6 +109,11 @@ Currently, the following reducers are supported:
   opt crashes with only analysis printers (i.e. no transformation passes).
   When successful, this makes it clear when a problem exists in an analysis
   as opposed to (possibly many) consumer passes.
+* creduce.  creduce will be used to reduce crashes in clang with C/C++ inputs.
+  Crash reduction is unconstrained meaning *any* crash will be reduced.  In
+  principal, creduce could be applied to other input formats, but initial
+  experimentation indicates that the resource cost vs result quality tradeoff
+  is not worthwhile.
 
 The results from reducers will be cross fed - i.e. a reduced output from
 bugpoint will be further reduced via llvm-reduce and vice-versa.  Note that
@@ -118,9 +123,7 @@ reduction order chosen.  It can be insightful to compare them.
 
 In the nearish future, the following additions are planned:
 
-* creduce to reduce c/c++ language inputs for clang crashes.  Currently
-  blocked by a lack of motivating corpus examples to test with.  There's now
-  a couple, but more would really help.
+* creduce for alive failures.
 * clang to opt runline conversion.  Many times we can derive a crashing opt
   test by taking clang's -emit-llvm output and doing a bit of cleanup.
 * Constrained reduction of assertion failures.  Blocked by lack of current
@@ -130,4 +133,7 @@ In the nearish future, the following additions are planned:
   interface complexity which would require duplicating some code in the
   reducer wrapping code.  This is blocked on figuring out if the interface
   can be simplified to a self contains MIR test to drive target specification.
-
+* Reduction of assembly inputs.  The challenge here is that most of the tools
+  crash when fed malformed assembly.  Generally, finding crashes on malformed
+  input is "easy" and thus reduction to malformed input is not "interesting".
+  Blocked on finding a way to reduce only valid, but still crashing, inputs.
