@@ -8,8 +8,8 @@ supported failure types below.)
 
 To contribute a test or corpus of tests to be auto-triaged, please post a
 pull request. Once (manually) accepted, the automated reducer should have
-added reduced examples within roughly 24 hours.  Further usage information
-can be found below.
+added reduced examples fairly quickly.  Further usage information can be
+found below.
 
 .. contents::
 
