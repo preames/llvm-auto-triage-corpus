@@ -41,3 +41,7 @@
 ["llvm-reduce-crash-unconstrained", "371c8dded7a97d6cb753ccfa8bb7680909eb7d20.ll", "8249de4b8933f82ab2cd596870c266c8391ccc3e.ll"]
 ["llvm-reduce-crash-unconstrained", "0293efb77ddc0aa2f3ed1ab637d32d79a43ec9d1.ll", "abb3a70055f259d615a9cbf009f3ed891e9079e3.ll"]
 ["bugpoint-crash-unconstrained", "1d31c0a6f9b7eae454982402f305ccf392fc1db8.ll", "df7c04bf579fa0edba7c37cfc3b75a06465db170.ll"]
+["bugpoint-crash-unconstrained", "llvm-bugs/pr52697.ll", "1821a1903c940877955d5b7821ddbcc1c3b527d6.ll"]
+["llvm-reduce-crash-unconstrained", "llvm-bugs/pr52697.ll", "fdc1d26dbd3b243c2e76257f8363b5241611daf7.ll"]
+["bugpoint-crash-unconstrained", "fdc1d26dbd3b243c2e76257f8363b5241611daf7.ll", "e1b83c256416b96de91f1332cdab609977d26a0f.ll"]
+["llvm-reduce-crash-unconstrained", "fdc1d26dbd3b243c2e76257f8363b5241611daf7.ll", "32983dfc2d39fd465eb731d34e867819babda715.ll"]
