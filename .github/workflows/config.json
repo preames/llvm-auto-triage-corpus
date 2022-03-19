@@ -1,5 +1,5 @@
 {
-    "LLVM_BUILD_DIR" : "/usr/lib/llvm-14/bin/",
+    "LLVM_BUILD_DIR" : "/usr/lib/llvm-14/",
     "LLVM_BUILD_REVISION" : "HEAD",
     "LLVM_SOURCE_DIR" : "./",
     "CORPUS_DIR" : "./"
