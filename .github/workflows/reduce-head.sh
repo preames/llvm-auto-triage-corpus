@@ -18,5 +18,5 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" all
 sudo apt-get install creduce
 git clone https://github.com/preames/llvm-auto-triage-scripting
 
-cp ./.github/workflows/config.json llvm-auto-triage-scripting/
+cp ./.github/workflows/config.json ./
 time python3 llvm-auto-triage-scripting/manage-corpus.py $LAST_CHANGED_FILES
