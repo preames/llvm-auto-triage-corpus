@@ -1,0 +1,10 @@
+name: Reduce a test case pushed to head
+on: [push]
+jobs:
+  Testcase-Reduce-on-Push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Run the reducer script
+      - run: bash ./.github/workflows/reduce-head.sh
