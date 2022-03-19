@@ -11,7 +11,7 @@ LAST_CHANGED_FILES=./oss_fuzz/4733908335853568.ll
 
 # install nightly clang/etc (and log versions installed)
 sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" all
-clang -v
+/usr/lib/llvm-10/bin/clang -v
 /usr/lib/llvm-14/bin/opt -version
 
 # Install creduce and management scripting
@@ -19,6 +19,4 @@ sudo apt-get install creduce
 git clone https://github.com/preames/llvm-auto-triage-scripting
 
 cp ./.github/workflows/config.json llvm-auto-triage-scripting/
-pushd llvm-auto-triage-scripting
 time python3 manage-corpus.py $LAST_CHANGED_FILES
-popd
