@@ -12,12 +12,14 @@ LAST_CHANGED_FILES=./oss_fuzz/4733908335853568.ll
 # install nightly clang/etc (and log versions installed)
 sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" all
 clang -v
-opt -v
+llvm-opt -v
 
 # Install creduce and management scripting
 sudo apt-get install creduce
 git clone https://github.com/preames/llvm-auto-triage-scripting
 
 pushd llvm-auto-triage-scripting
-time python3 manage-corpus.py $LAST_CHANGED_FILES
+# FIXME: Need to use versions off path instead of expecting build/src layout
+# need to generalize code
+#time python3 manage-corpus.py $LAST_CHANGED_FILES
 popd
